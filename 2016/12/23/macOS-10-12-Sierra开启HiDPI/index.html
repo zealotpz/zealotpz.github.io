@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> macOS 10.12 Sierra开启HiDPI · 木上贝的Blog</title><meta name="description" content="macOS 10.12 Sierra开启HiDPI - 木上贝"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="zealotpz.com/atom.xml" title="木上贝的Blog"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/zealotpz" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/zealotpz" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">macOS 10.12 Sierra开启HiDPI</h1><div class="post-info">Dec 23, 2016</div><div class="post-content"><p>MacBook Pro 升级macOS 10.12 Sierra系统后外接2K 显示器无法开启HiDPI,<br>之前在Mac OS X 10.11 El Capitan下的几个方法均失效:</p>
+<ul>
+<li>使用<code>SwitchResX</code><br>按照 知乎: <a href="https://www.zhihu.com/question/35300978/answer/68752378" target="_blank" rel="noopener">https://www.zhihu.com/question/35300978/answer/68752378</a> 回答操作, 关闭SIP后选择<br>1920*1080分辨率即可</li>
+<li>使用<code>RDM</code><br>按照 Github: <a href="https://github.com/syscl/Enable-HiDPI-OSX" target="_blank" rel="noopener">https://github.com/syscl/Enable-HiDPI-OSX</a> 的流程,执行<code>enable-HiDPI.sh</code>后用 RDM选择1920*1080分辨率即可<a id="more"></a>
+后根据 <a href="https://www.zhihu.com/question/35300978/answer/126332986" target="_blank" rel="noopener">https://www.zhihu.com/question/35300978/answer/126332986</a> 成功开启</li>
+</ul>
+<p><strong> 流程如下: </strong><br>1.如已安装,卸载SwitchResX,并在<code>系统偏好设置</code>内移除设置面板<br>2.重启电脑,开机按<code>CMD+R</code>进入恢复模式,进入终端后输入<code>csrutil disable</code>关闭SIP<br>3.官网 <a href="http://www.madrau.com/" target="_blank" rel="noopener">http://www.madrau.com/</a> 下载 最新版<code>SwitchResX4.zip</code>,选择<code>为电脑上所有用户安装!</code><br>4.新建一个管理员角色,如 test<br>5.注销当前用户,用 test 用户登录,用10.11 El Capitan下的方法新建<code>3840*2160</code>分辨率即可,后续操作相同<br>6.删除 test 用户,开启 SIP</p>
+<p><strong><em> <code>注意事项</code>: </em></strong></p>
+<ul>
+<li>请尽量使用 <code>DP线</code>.</li>
+<li>如SwitchResX 中的<code>Custom Resolutions</code>界面<code>+</code>号为灰色,请检查<code>SIP</code>是否成功关闭.</li>
+<li><code>Scaled resolution</code> 中设置的分辨率应为 HiPDI 的<code>2</code>倍,如1920x1080(HiDPI)设置为3840x2160</li>
+<li>操作正常,但重启后仍显示<code>not installed</code>,请检查SwitchResX是否付费.</li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a href="/2016/12/30/2016-end-of-year/" class="prev">PREV</a><a href="/2016/11/30/Spring-MVC-请求中文乱码/" class="next">NEXT</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'seansun';
+var disqus_identifier = '2016/12/23/macOS-10-12-Sierra开启HiDPI/';
+var disqus_title = 'macOS 10.12 Sierra开启HiDPI';
+var disqus_url = 'zealotpz.com/2016/12/23/macOS-10-12-Sierra开启HiDPI/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//seansun.disqus.com/count.js" async></script><div class="copyright"><p>© 2015 - 2018 <a href="zealotpz.com">木上贝</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>

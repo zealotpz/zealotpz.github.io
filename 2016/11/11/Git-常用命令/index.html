@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Git 常用命令 · 木上贝的Blog</title><meta name="description" content="个人Git 常用命令"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="zealotpz.com/atom.xml" title="木上贝的Blog"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/zealotpz" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/zealotpz" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Git 常用命令</h1><div class="post-info">Nov 11, 2016</div><div class="post-content"><p><strong>1.版本回退:</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span> 查看哈希值</span><br><span class="line">git reset --hard HEAD^git reset --hard 76d4f48c5bc26033fe581e923bbca32e12c8af0b</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><code>HEAD</code>指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令<code>git reset --hard commit_id</code>。</li>
+<li>穿梭前，用<code>git log</code>可以查看提交历史，以便确定要回退到哪个版本。</li>
+<li>要重返未来，用<code>git reflog</code>查看命令历史，以便确定要回到未来的哪个版本。</li>
+</ul>
+<a id="more"></a>
+<p><strong>2.本地与远端差异比较:</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin  git diff master origin/master</span><br></pre></td></tr></table></figure>
+<p><strong>3.分支</strong></p>
+<p>查看分支：<code>git branch</code></p>
+<p>创建分支：<code>git branch</code></p>
+<p>切换分支：<code>git checkout</code></p>
+<p>创建+切换分支：<code>git checkout -b</code></p>
+<p>合并某分支到当前分支：<code>git merge</code></p>
+<p>删除分支：<code>git branch -d</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin <span class="built_in">test</span>:master    // 提交本地<span class="built_in">test</span>分支作为远程的master分支</span><br><span class="line">$ git push origin <span class="built_in">test</span>:<span class="built_in">test</span>      // 提交本地<span class="built_in">test</span>分支作为远程的<span class="built_in">test</span>分支</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">拉取远程仓库：$ git pull [remoteName] [localBranchName] git pull origin demo</span><br></pre></td></tr></table></figure>
+<p><strong>4.标签</strong></p>
+<p>4.1 命令<code>git tag</code>就可以打一个新标签：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag v1.0</span><br></pre></td></tr></table></figure>
+<p><code>git tag -a  -m &quot;blablabla...&quot;</code>可以指定标签信息；</p>
+<p>4.2 命令<code>git tag</code>查看所有标签：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git tag</span><br><span class="line">v1.0</span><br></pre></td></tr></table></figure>
+<p>4.3 推送标签 <code>git push origin [tagname]</code></p>
+<p>一次推送所有标签: <code>$ git push origin --tags</code></p>
+<p><strong>5.添加远程库</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@server-name:path/repo-name.git；</span><br></pre></td></tr></table></figure></p>
+<p>添加完成后,把本地库的内容推送到远程，用<code>git push</code>命令，实际上是把当前分支master推送到远程。<br>由于远程库是空的，我们第一次推送master分支时，加上了<code>-u</code>参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。</p>
+</div></article></div></main><footer><div class="paginator"><a href="/2016/11/15/hexo-常用命令/" class="prev">PREV</a><a href="/2016/11/11/近日琐事-户口-身份证/" class="next">NEXT</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'seansun';
+var disqus_identifier = '2016/11/11/Git-常用命令/';
+var disqus_title = 'Git 常用命令';
+var disqus_url = 'zealotpz.com/2016/11/11/Git-常用命令/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//seansun.disqus.com/count.js" async></script><div class="copyright"><p>© 2015 - 2018 <a href="zealotpz.com">木上贝</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>

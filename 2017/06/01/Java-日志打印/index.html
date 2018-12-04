@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Java 日志打印 · 木上贝的Blog</title><meta name="description" content="Java 日志打印 - 木上贝"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="zealotpz.com/atom.xml" title="木上贝的Blog"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/zealotpz" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/zealotpz" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Java 日志打印</h1><div class="post-info">Jun 1, 2017</div><div class="post-content"><p>log4j 中常用的日志打印方式如下:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.info(<span class="string">"请求参数 "</span> + param + <span class="string">",id: '"</span> + id + <span class="string">"'"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>这样写不仅更啰嗦和可读性差，更严重的是字符串拼接影响效率（当这个级别并不需要输出的时候）。slf4j引入了一个{}的注入特性。并且由于避免了每次都进行字符串拼接，toString方法不会被调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(LogTest.class);</span><br><span class="line"></span><br><span class="line">logger.info(<span class="string">"请求参数: &#123;&#125;"</span>, param);</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>日志框架和System.out相比有两大优势：分类和级别。两者可以让你可以选择性的过滤日志，永久的或者只是在排查错误的时候.如下表格:</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>概述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ERROR</td>
+<td>发生了严重的错误，必须马上处理。这种级别的错误是任何系统都无法容忍的。比如：空指针异常，数据库不可用，关键路径的用例无法继续执行。</td>
+</tr>
+<tr>
+<td>WARN</td>
+<td>还会继续执行后面的流程，但应该引起重视。其实在这里我希望有两种级别：一个是存在解决方案的明显的问题（比如，”当前数据不可用，使用缓存数据”），另一个是潜在的问题和建议（比如“程序运行在开发模式下”或者“管理控制台的密码不够安全”）。应用程序可以容忍这些信息，不过它们应该被检查及修复。</td>
+</tr>
+<tr>
+<td>DEBUG</td>
+<td>开发人员关注的事</td>
+</tr>
+<tr>
+<td>TRACE</td>
+<td>更为详尽的信息，只是开发阶段使用。在产品上线之后的一小段时间内你可能还需要关注下这些信息，不过这些日志记录只是临时性的，最终应该关掉。DEBUG和TRACE的区别很难区分，不过如果你加了一行日志，在开发测试完后又删了它的话，这条日志就应该是TRACE级别的。</td>
+</tr>
+</tbody>
+</table>
+<p>关于<code>{}</code>转义：<br>SLF4j仅支持在{后面紧跟}，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">logger.debug(<span class="string">"Set &#123;1,2&#125; differs from &#123;&#125;"</span>, <span class="string">"3"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//将会输出:</span></span><br><span class="line">Set &#123;<span class="number">1</span>,<span class="number">2</span>&#125; differs from <span class="number">3</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">logger.debug(<span class="string">"Set &#123;1,2&#125; differs from &#123;&#123;&#125;&#125;"</span>, <span class="string">"3"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//将会输出:</span></span><br><span class="line">Set &#123;<span class="number">1</span>,<span class="number">2</span>&#125; differs from &#123;<span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>如果要输出＂{}＂则仅需要在{前面加上转移符”\”，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">logger.debug(<span class="string">"Set \\&#123;&#125; differs from &#123;&#125;"</span>, <span class="string">"3"</span>);</span><br><span class="line"></span><br><span class="line">将会输出:</span><br><span class="line">Set &#123;&#125; differs from <span class="number">3</span></span><br></pre></td></tr></table></figure></p>
+<p>注意在Java中反斜杠需要写作： <code>\\</code>.</p>
+</div></article></div></main><footer><div class="paginator"><a href="/2017/07/19/CentOS-7-修改时区/" class="prev">PREV</a><a href="/2017/05/25/IDEA-远程调试Tomcat 与 Springboot()/" class="next">NEXT</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'seansun';
+var disqus_identifier = '2017/06/01/Java-日志打印/';
+var disqus_title = 'Java 日志打印';
+var disqus_url = 'zealotpz.com/2017/06/01/Java-日志打印/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//seansun.disqus.com/count.js" async></script><div class="copyright"><p>© 2015 - 2018 <a href="zealotpz.com">木上贝</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>
